@@ -1,41 +1,27 @@
-name: Expo Build (CD)
-
+name: EAS Build
 on:
+  workflow_dispatch:
   push:
-    branches: 
-      main 
-
+    branches:
+      - main
 jobs:
   build:
+    name: Install and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
           cache: npm
-
-      - name: Install Expo CLI
-        uses: expo/setup-expo@v1  # Replace with the desired version if needed
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
         with:
-          expo-sdk: ^44.0.0  # Adjust the SDK version as required
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
-
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install npm dependencies
+        run: npm install
       - name: Install dependencies
-        run: npm ci  # Use npm ci for production-like installs
-
-      - name: Set EXPO_TOKEN
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: echo "::add-mask::EXPO_TOKEN"  # Mask the token for security
-
-      - name: Build Expo app (Android & iOS)
-        run: expo build:android expo build:ios --clean
+        run: npm ci
+      - name: Build on EAS
+        run: eas build --platform android --non-interactive --no-wait
