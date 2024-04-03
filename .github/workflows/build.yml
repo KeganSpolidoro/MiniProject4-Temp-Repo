@@ -29,7 +29,7 @@ jobs:
 
       - name: Set EXPO_TOKEN
         env:
-          EXPO_TOKEN: ${{ secrets.2F3tidH5i029L1XT28hHkHDehR_KpIshDmxkZJCF }}  # Replace with your actual token
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  # Replace with your actual token
         run: echo "::add-mask::EXPO_TOKEN"  # Mask the token for security
 
       - name: Build Expo app
