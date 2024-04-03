@@ -1,4 +1,5 @@
 {
+  "homepage": "http://KeganSpolidoro.github.io/MiniProject4-Temp-Repo",
   "name": "camera",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
@@ -7,7 +8,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "gh-pages -t -d dist",
+    "predeploy": "expo export -p web"
   },
   "jest": {
     "preset": "jest-expo",
@@ -32,6 +35,7 @@
     "@testing-library/react": "^14.2.1",
     "@testing-library/react-native": "^12.4.3",
     "eas-cli": "^7.6.2",
+    "gh-pages": "^6.1.1",
     "jest-expo": "^50.0.3"
   },
   "private": true

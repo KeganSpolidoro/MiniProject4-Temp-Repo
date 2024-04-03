@@ -31,6 +31,9 @@
       "eas": {
         "projectId": "11fe951c-27dd-4894-94d7-9ddb73609e16"
       }
+    },
+    "experiments": {
+      "baseUrl": "/MiniProject4-Temp-Repo"
     }
   }
 }
