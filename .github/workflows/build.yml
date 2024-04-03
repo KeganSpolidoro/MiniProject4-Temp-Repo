@@ -1,9 +1,8 @@
 name: Expo Build (CD)
 
 on:
-  push:
-    branches:
-      main 
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -11,10 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Expo CLI
-        uses: expo/setup-expo@v1
+      - uses: actions/setup-node@v3
         with:
-          expo-sdk: ^44.0.0
+          node-version: 18.x
+          cache: npm
+
+      - name: Install Expo CLI
+        uses: expo/setup-expo@v1  # Replace with the desired version if needed
+        with:
+          expo-sdk: ^44.0.0  # Adjust the SDK version as required
 
       - name: Cache Node.js modules
         uses: actions/cache@v3
@@ -25,12 +29,12 @@ jobs:
             ${{ runner.os }}-build-
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # Use npm ci for production-like installs
 
       - name: Set EXPO_TOKEN
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  # Replace with your actual token
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: echo "::add-mask::EXPO_TOKEN"  # Mask the token for security
 
-      - name: Build Expo app
-        run: eas build --platform android --non-interactive --no-wait
+      - name: Build Expo app (Android & iOS)
+        run: expo build:android expo build:ios --clean
